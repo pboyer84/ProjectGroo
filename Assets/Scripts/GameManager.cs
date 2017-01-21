@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 
     public GameObject selectionStrip;
-    public GameObject tankIconPrefab;
     public GameObject castleGO;
     public Text moneyDisplay;
     public Sprite SoldSprite;
@@ -15,9 +14,7 @@ public class GameManager : MonoBehaviour {
     private GenerateTank generateTankScript;
     public float spawnCooldown = 1f;
     int accumulator, money;
-    string spriteString;
     Dictionary<string, TankIcon> theTankIcons;
-    Dictionary<string, GameObject> theTankPrefabsLookup;
     public GameObject[] theTankPrefabs;
     public GameObject[] theTankIconPrefabs;
     GameObject[] pauseObjects;
@@ -27,9 +24,8 @@ public class GameManager : MonoBehaviour {
     void Start ()
     {
         money = 1000;
-        SoldSprite = Resources.Load<Sprite>("Sprites/SoldSprite");
+        //SoldSprite = Resources.Load<Sprite>("Sprites/SoldSprite");
         theTankIcons = new Dictionary<string, TankIcon>();
-        theTankPrefabsLookup = new Dictionary<string, GameObject>();
         accumulator = 1;
         generateTankScript = castleGO.GetComponent<GenerateTank>();
         moneyDisplay.text = "$" + money.ToString();

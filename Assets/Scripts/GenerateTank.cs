@@ -7,6 +7,7 @@ public class GenerateTank : MonoBehaviour {
     int spawnNumber = 0;
     public Vector3[] spawnPoints;
     Vector3 spawnPosition;
+    Quaternion StartingRotation = Quaternion.Euler(0f, 180f, 0f);
     // Use this for initialization
     void Start () {
         
@@ -21,7 +22,8 @@ public class GenerateTank : MonoBehaviour {
     {
         //three points, three unity units apart, cycled through
         spawnPosition = spawnPoints[spawnNumber];
-        GameObject.Instantiate(tankPrefab, spawnPosition, Quaternion.identity);
+        GameObject go = Instantiate(tankPrefab, spawnPosition, Quaternion.identity) as GameObject;
+        go.transform.rotation = StartingRotation;
         if (spawnNumber == 2)
         {
             spawnNumber = 0;

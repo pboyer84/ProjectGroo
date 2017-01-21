@@ -13,8 +13,7 @@ public class TankIcon : MonoBehaviour
     }
     private Image theImage;
     public float velocity = 1f;
-    public GameObject theSelector;
-    Image theSelector2;
+    private GameObject theSelector;
     public bool IsTouchingBar;
     private RectTransform myRect;
     private GameManager GMScript;
