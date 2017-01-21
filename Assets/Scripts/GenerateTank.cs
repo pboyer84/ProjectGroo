@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class GenerateTank : MonoBehaviour {
-    public GameObject tankPrefab;
+
+    int randomTank;
     int spawnNumber = 0;
     public Vector3[] spawnPoints;
     Vector3 spawnPosition;
@@ -15,18 +16,19 @@ public class GenerateTank : MonoBehaviour {
 	void Update () {
        
 	}
-    
-    public void MakeTank()
+
+    public void MakeTank(GameObject tankPrefab)
     {
-            //three points, three unity units apart, cycled through
-            spawnPosition = spawnPoints[spawnNumber];
-            GameObject.Instantiate(tankPrefab, spawnPosition, Quaternion.identity);
-            if (spawnNumber == 2)
-            {
-                spawnNumber = 0;
-            }
-            else {
-                spawnNumber++;
-            }
+        //three points, three unity units apart, cycled through
+        spawnPosition = spawnPoints[spawnNumber];
+        GameObject.Instantiate(tankPrefab, spawnPosition, Quaternion.identity);
+        if (spawnNumber == 2)
+        {
+            spawnNumber = 0;
+        }
+        else
+        {
+            spawnNumber++;
+        }
     }
 }

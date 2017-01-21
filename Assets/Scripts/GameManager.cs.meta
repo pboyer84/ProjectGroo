@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: 1e04d9c49d5cc914e92494cb5319d9ed
-timeCreated: 1484956578
+timeCreated: 1485013261
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - selectionStrip: {instanceID: 0}
+  - tankIconPrefab: {instanceID: 0}
+  - castleGO: {fileID: 182182, guid: 9fa59ff4e8125b844be655ed288e1ba2, type: 2}
+  - moneyDisplay: {instanceID: 0}
+  - SoldSprite: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

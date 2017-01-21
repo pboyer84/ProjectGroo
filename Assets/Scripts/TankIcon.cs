@@ -19,6 +19,7 @@ public class TankIcon : MonoBehaviour
     private RectTransform myRect;
     private GameManager GMScript;
     public bool IsAvailableForPurchase = true;
+    public GameObject MyTankPrefab;
     // Use this for initialization
 
     void Awake()
