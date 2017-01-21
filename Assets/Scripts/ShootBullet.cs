@@ -4,6 +4,7 @@ using System.Collections;
 public class ShootBullet : MonoBehaviour {
 
     public GameObject bulletPrefab;
+    public float speed;
 
 	// Use this for initialization
 	void Start () {
@@ -18,12 +19,13 @@ public class ShootBullet : MonoBehaviour {
         bulletPrefab.tag = gameObject.tag;
         if (bulletPrefab.tag == "Enemy")
         {
-            bulletPrefab.GetComponent<Move>().multiplier = 1f;
+            bulletPrefab.GetComponent<Move>().multiplier = speed;
         }
         else
         {
-            bulletPrefab.GetComponent<Move>().multiplier = -1f;
+            bulletPrefab.GetComponent<Move>().multiplier = -speed;
         }
+        bulletPrefab.GetComponent<Move>().movement = gameObject.transform.forward;
         Instantiate(bulletPrefab, transform.position, Quaternion.identity);
     }
 }

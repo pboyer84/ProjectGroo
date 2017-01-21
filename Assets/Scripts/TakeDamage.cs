@@ -18,6 +18,10 @@ public class TakeDamage : MonoBehaviour {
         if (bullet.gameObject.tag != gameObject.tag) {
             gameObject.GetComponent<Tank>().health -= 1f;
             Destroy(bullet.gameObject);
+            if (gameObject.GetComponent<Tank>().health == 0)
+            {
+                Destroy(gameObject);
+            }
         }
         Debug.Log("Collision Passed");
         
