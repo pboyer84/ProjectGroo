@@ -18,6 +18,7 @@ public class TankIcon : MonoBehaviour
     public bool IsTouchingBar;
     private RectTransform myRect;
     private GameManager GMScript;
+    public bool IsAvailableForPurchase = true;
     // Use this for initialization
 
     void Awake()
@@ -42,7 +43,6 @@ public class TankIcon : MonoBehaviour
         {
            GMScript.DestroyIcon(transform.gameObject);
         }
-
     }
 	
     // Update is called once per frame
@@ -50,4 +50,6 @@ public class TankIcon : MonoBehaviour
     {
         transform.position -= new Vector3(0f, velocity * Time.deltaTime, 0f);
 	}
+
+    
 }
