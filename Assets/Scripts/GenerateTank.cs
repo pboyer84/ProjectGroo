@@ -13,15 +13,20 @@ public class GenerateTank : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown("space")) {
+       
+	}
+    
+    public void MakeTank()
+    {
             //three points, three unity units apart, cycled through
             spawnPosition = spawnPoints[spawnNumber];
             GameObject.Instantiate(tankPrefab, spawnPosition, Quaternion.identity);
-            if(spawnNumber == 2){
+            if (spawnNumber == 2)
+            {
                 spawnNumber = 0;
-            }else{
+            }
+            else {
                 spawnNumber++;
             }
-        }
-	}
+    }
 }
