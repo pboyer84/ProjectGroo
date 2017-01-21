@@ -5,7 +5,12 @@ using System.Collections;
 public class TankIcon : MonoBehaviour
 {
 
-    public Sprite theSprite;
+    public Sprite StartingSprite;
+    public Sprite MyImageSprite
+    {
+        get { return theImage.sprite; }
+        set { theImage.sprite = value; }
+    }
     private Image theImage;
     public float velocity = 1f;
     public GameObject theSelector;
@@ -25,13 +30,13 @@ public class TankIcon : MonoBehaviour
     void Start ()
     {
         theImage = GetComponent<Image>();
-        theImage.sprite = theSprite;
+        theImage.sprite = StartingSprite;
         theSelector = GameObject.FindGameObjectWithTag("Selector");
     }
 
 	void Update()
     {
-        IsTouchingBar = transform.position.y - theSelector.transform.position.y < myRect.rect.width / 2;
+        IsTouchingBar = Mathf.Abs(transform.position.y - theSelector.transform.position.y) < myRect.rect.width / 2;
         
         if (transform.position.y < -350f)
         {
