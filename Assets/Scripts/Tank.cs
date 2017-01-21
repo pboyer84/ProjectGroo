@@ -10,21 +10,68 @@ public class Tank : MonoBehaviour {
 
     public float shootTimer;
     public float shootCooldown;
-	// Use this for initialization
-	void Start () {
+
+    public Vector3 defaultDirection;
+    public Quaternion defaultRotation;
+    public float speed;
+    // Use this for initialization
+    void Start () {
         shootTimer = 0;
         retreating = false;
         inCombat = false;
+
+        defaultDirection = transform.forward;
+        defaultRotation = transform.rotation;
+
+        speed = 1f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         shootTimer += Time.deltaTime;
-        if (shootTimer > shootCooldown && inCombat) {
+        if (shootTimer >= shootCooldown && inCombat)
+        {
             ShootBullet myInstance = gameObject.GetComponent<ShootBullet>();
             myInstance.Shoot();
             shootTimer = 0;
         }
-        
 	}
+    void FixedUpdate() {
+        detectEnemies(4f);
+        if (!inCombat)
+        {
+            moveForward();
+            transform.rotation = defaultRotation;
+        }
+    }
+    public void detectEnemies(float r) {
+        int layer = 0;
+        if (gameObject.tag == "Enemy")
+        {
+            layer = 1 << 8;
+        }
+        else if (gameObject.tag == "Friendly")
+        {
+            layer = 1 << 9;
+        }
+        Vector3 center = transform.position;
+        Collider[] objectsInRadius = Physics.OverlapSphere(center, r, layer);
+        if (objectsInRadius.Length > 0) {
+            inCombat = true;
+            transform.LookAt(objectsInRadius[0].transform);
+
+        }
+        else inCombat = false;
+    }
+    public void moveForward() {
+        transform.position += defaultDirection * speed * Time.deltaTime; 
+    }
+    void OnDrawGizmos() {
+        Vector3 center = transform.position;
+        Ray r = new Ray(transform.position, transform.forward);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(center, 4);
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(r);
+    }
 }

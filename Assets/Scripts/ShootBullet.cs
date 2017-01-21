@@ -17,14 +17,6 @@ public class ShootBullet : MonoBehaviour {
 	}
     public void Shoot() {
         bulletPrefab.tag = gameObject.tag;
-        if (bulletPrefab.tag == "Enemy")
-        {
-            bulletPrefab.GetComponent<Move>().multiplier = speed;
-        }
-        else
-        {
-            bulletPrefab.GetComponent<Move>().multiplier = -speed;
-        }
         bulletPrefab.GetComponent<Move>().movement = gameObject.transform.forward;
         Instantiate(bulletPrefab, transform.position, Quaternion.identity);
     }
