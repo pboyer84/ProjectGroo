@@ -3,9 +3,13 @@ using System.Collections;
 
 public class Tank : MonoBehaviour {
 
-    public float health = 2.0f;
+    public float health;
+    public char type;
+
 
     public bool retreating;
+    public bool attackReady;
+
     public bool inCombat;
 
     public float shootTimer;
@@ -16,8 +20,11 @@ public class Tank : MonoBehaviour {
     public float speed;
     // Use this for initialization
     void Start () {
+        if (tag == "Friendly") health = 15f;
+        else health = 5f;
         shootTimer = 0;
         retreating = false;
+        attackReady = true;
         inCombat = false;
 
         defaultDirection = transform.forward;
@@ -29,7 +36,7 @@ public class Tank : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         shootTimer += Time.deltaTime;
-        if (shootTimer >= shootCooldown && inCombat)
+        if (shootTimer >= shootCooldown && inCombat && attackReady)
         {
             ShootBullet myInstance = gameObject.GetComponent<ShootBullet>();
             myInstance.Shoot();
@@ -43,15 +50,18 @@ public class Tank : MonoBehaviour {
             GetComponent<NavMeshAgent>().Resume();
             //transform.rotation = defaultRotation;
         }
-        else GetComponent<NavMeshAgent>().Stop();
+        else {
+            GetComponent<NavMeshAgent>().Stop();
+            attackReady = true;
+        }
     }
     public void detectEnemies(float r) {
         int layer = 0;
-        if (gameObject.tag == "Enemy")
+        if (gameObject.tag == "Enemy" && attackReady)
         {
             layer = 1 << 8;
         }
-        else if (gameObject.tag == "Friendly")
+        else if (gameObject.tag == "Friendly" && attackReady)
         {
             layer = 1 << 9;
         }

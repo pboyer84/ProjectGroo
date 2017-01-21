@@ -14,6 +14,8 @@ public class Clickontank : MonoBehaviour {
     }
     void OnMouseDown()
     {
+        if (!GetComponent<Tank>().retreating) GetComponent<Tank>().attackReady = false;
+        else GetComponent<Tank>().attackReady = true;
         GetComponent<Tank>().retreating = !GetComponent<Tank>().retreating;
         GetComponent<MoveTo>().GotoNextPoint();
     }

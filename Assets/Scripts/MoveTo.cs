@@ -10,7 +10,7 @@ public class MoveTo : MonoBehaviour {
 	void Start () {
         points = new Vector3[2];
         agent = GetComponent<NavMeshAgent>();
-        points[1] = transform.position + transform.forward * 5f;
+        points[1] = transform.position + transform.forward * 1f;
         points[0]= transform.position + transform.forward * 20f;
         GotoNextPoint();
 	}

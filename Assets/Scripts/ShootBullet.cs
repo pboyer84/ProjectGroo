@@ -18,6 +18,7 @@ public class ShootBullet : MonoBehaviour {
     public void Shoot() {
         bulletPrefab.tag = gameObject.tag;
         bulletPrefab.GetComponent<Move>().movement = gameObject.transform.forward;
+        bulletPrefab.GetComponent<Bullet>().type = GetComponent<Tank>().type;
         Instantiate(bulletPrefab, transform.position, Quaternion.identity);
     }
 }

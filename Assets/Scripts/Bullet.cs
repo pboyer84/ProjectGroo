@@ -5,6 +5,7 @@ public class Bullet : MonoBehaviour {
 
     public float existTimer;
     public float existThreshold;
+    public char type;
 	// Use this for initialization
 	void Start () {
         existTimer = 0;
