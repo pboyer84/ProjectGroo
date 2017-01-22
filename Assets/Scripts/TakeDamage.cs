@@ -9,7 +9,7 @@ public class TakeDamage : MonoBehaviour {
     public GameObject manager;
 
     public AudioClip explosionTank;
-
+    public GameObject TankDeathEffectPrefab;
 
 	// Use this for initialization
 	void Start () {
@@ -19,11 +19,6 @@ public class TakeDamage : MonoBehaviour {
         strength.Add('b', 'r');
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     void OnTriggerEnter (Collider bullet) {
         dam = 2f;
         char btype = bullet.gameObject.GetComponent<Bullet>().type;
@@ -38,6 +33,7 @@ public class TakeDamage : MonoBehaviour {
             {
                 if (tag == "Enemy") manager.GetComponent<GameManager>().enemyLeft -= 1;
                 SoundManager.instance.PlaySingle(explosionTank);
+                Instantiate(TankDeathEffectPrefab, gameObject.transform.position, gameObject.transform.rotation);
                 Destroy(gameObject);
             }
         }
