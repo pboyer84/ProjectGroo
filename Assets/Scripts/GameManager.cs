@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     private float spawnTimer = 0f;
     private GenerateTank generateTankScript;
     private GenerateTank generateEnemyScript;
+    private GeneratePowerUp generatePowerUpScript;
     private float spawnCooldown;
     public float timeToTravelStrip = 5f;
     private float tankIconVelocity;
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour {
         accumulator = 1;
         generateTankScript = castleGO.GetComponent<GenerateTank>();
         generateEnemyScript = EnemySpawn.GetComponent<GenerateTank>();
+        generatePowerUpScript = castleGO.GetComponent<GeneratePowerUp>();
         moneyDisplay.text = "$" + money.ToString();
         Time.timeScale = 1;
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
@@ -97,7 +99,13 @@ public class GameManager : MonoBehaviour {
                     if(money >= 100)
                     {
                         SoundManager.instance.PlaySingle(buySound);
-                        generateTankScript.MakeTank(icon.MyTankPrefab);
+                        switch (icon.myType)
+                        {
+                            case IconType.TANK: generateTankScript.MakeTank(icon.MyTankPrefab); break;
+                            case IconType.POWERUP: generatePowerUpScript.MakePowerUp(icon.MyTankPrefab); break;
+                            default: break;
+                        }
+                       
                         touchedIcons.Add(icon);
                         money -= 100;
                         moneyDisplay.text = "$" +  money.ToString();

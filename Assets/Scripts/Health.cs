@@ -2,14 +2,11 @@
 using System.Collections;
 
 public class Health : MonoBehaviour {
+    public float Max;
     public float value;
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    void Awake()
+    {
+        Max = value;
+    }
 }

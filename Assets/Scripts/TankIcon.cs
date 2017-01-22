@@ -6,6 +6,7 @@ public class TankIcon : MonoBehaviour
 {
 
     public Sprite StartingSprite;
+    public IconType myType;
     public Sprite MyImageSprite
     {
         get { return theImage.sprite; }
