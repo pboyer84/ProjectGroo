@@ -43,16 +43,6 @@ public class Tank : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        shootTimer += Time.deltaTime;
-        if (shootTimer >= shootCooldown && inCombat && attackReady)
-        {
-            ShootBullet myInstance = gameObject.GetComponent<ShootBullet>();
-            SoundManager.instance.PlaySingle(laser);
-            myInstance.Shoot();
-            shootTimer = 0;
-        }
-	}
-    void FixedUpdate() {
         detectEnemies(radius);
         if (!inCombat && GetComponent<MoveTo>().agent.remainingDistance > 1f)
         {
@@ -63,6 +53,17 @@ public class Tank : MonoBehaviour {
             GetComponent<NavMeshAgent>().Stop();
             attackReady = true;
         }
+        shootTimer += Time.deltaTime;
+        if (shootTimer >= shootCooldown && inCombat && attackReady)
+        {
+            ShootBullet myInstance = gameObject.GetComponent<ShootBullet>();
+            SoundManager.instance.PlaySingle(laser);
+            myInstance.Shoot();
+            shootTimer = 0;
+        }
+	}
+    void FixedUpdate() {
+
     }
     public void detectEnemies(float r) {
         int layer = 0;
