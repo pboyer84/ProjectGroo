@@ -6,9 +6,11 @@ public class TakeDamage : MonoBehaviour {
 
     Dictionary<char, char> strength = new Dictionary<char, char>();
     public float dam;
+    public GameObject manager;
 
 	// Use this for initialization
 	void Start () {
+        manager = GameObject.FindGameObjectWithTag("GameController");
         strength.Add('r', 'g');
         strength.Add('g', 'b');
         strength.Add('b', 'r');
@@ -31,6 +33,7 @@ public class TakeDamage : MonoBehaviour {
             Destroy(bullet.gameObject);
             if (gameObject.GetComponent<Tank>().health <= 0)
             {
+                if (tag == "Enemy") manager.GetComponent<GameManager>().enemyLeft -= 1;
                 Destroy(gameObject);
             }
         }

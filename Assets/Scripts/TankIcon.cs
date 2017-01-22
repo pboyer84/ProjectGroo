@@ -17,6 +17,7 @@ public class TankIcon : MonoBehaviour
     public bool IsTouchingBar;
     private RectTransform myRect;
     private GameManager GMScript;
+    private float myCanvasScaleFactor;
     public bool IsAvailableForPurchase = true;
     public GameObject MyTankPrefab;
     // Use this for initialization
@@ -32,12 +33,13 @@ public class TankIcon : MonoBehaviour
     {
         theImage = GetComponent<Image>();
         theImage.sprite = StartingSprite;
+        myCanvasScaleFactor = theImage.canvas.scaleFactor;
         theSelector = GameObject.FindGameObjectWithTag("Selector");
     }
 
 	void Update()
     {
-        IsTouchingBar = Mathf.Abs(transform.position.y - theSelector.transform.position.y) < myRect.rect.width / 2;
+        IsTouchingBar = Mathf.Abs((transform.position.y - theSelector.transform.position.y)/myCanvasScaleFactor) < myRect.rect.width / 2;
         
         if (transform.position.y < -350f)
         {

@@ -18,10 +18,21 @@ public class Tank : MonoBehaviour {
     public Vector3 defaultDirection;
     public Quaternion defaultRotation;
     public float speed;
+
+    public float radius;
+
+    public GameObject manager;
+
     // Use this for initialization
     void Start () {
+        manager = GameObject.FindGameObjectWithTag("GameController");
         if (tag == "Friendly") health = 15f;
-        else health = 5f;
+        else
+        {
+            health = 5f;
+            manager.GetComponent<GameManager>().enemyLeft += 1;
+
+        }
         shootTimer = 0;
         retreating = false;
         attackReady = true;
@@ -44,7 +55,7 @@ public class Tank : MonoBehaviour {
         }
 	}
     void FixedUpdate() {
-        detectEnemies(4f);
+        detectEnemies(radius);
         if (!inCombat && GetComponent<MoveTo>().agent.remainingDistance > 1f)
         {
             GetComponent<NavMeshAgent>().Resume();
@@ -68,8 +79,12 @@ public class Tank : MonoBehaviour {
         Vector3 center = transform.position;
         Collider[] objectsInRadius = Physics.OverlapSphere(center, r, layer);
         if (objectsInRadius.Length > 0) {
-            inCombat = true;
-            transform.LookAt(objectsInRadius[0].transform);
+            if (objectsInRadius[0].name != "Bullet(Clone)")
+            {
+                inCombat = true;
+                transform.LookAt(objectsInRadius[0].transform);
+            }
+            
 
         }
         else inCombat = false;
@@ -79,7 +94,7 @@ public class Tank : MonoBehaviour {
         Vector3 center = transform.position;
         Ray r = new Ray(transform.position, transform.forward);
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(center, 4);
+        Gizmos.DrawWireSphere(center, radius);
         Gizmos.color = Color.red;
         Gizmos.DrawRay(r);
     }

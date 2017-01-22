@@ -7,27 +7,53 @@ public class GameManager : MonoBehaviour {
 
     public GameObject selectionStrip;
     public GameObject castleGO;
+    public GameObject EnemySpawn;
     public Text moneyDisplay;
     public Sprite SoldSprite;
     private Vector3 testLocation = new Vector3(-50f, 30f, 0f);
     private float spawnTimer = 0f;
     private GenerateTank generateTankScript;
-    public float spawnCooldown = 1f;
+    private GenerateTank generateEnemyScript;
+    private float spawnCooldown;
+    public float timeToTravelStrip = 5f;
+    private float tankIconVelocity;
     int accumulator, money;
     Dictionary<string, TankIcon> theTankIcons;
     public GameObject[] theTankPrefabs;
     public GameObject[] theTankIconPrefabs;
+
+    public GameObject[] theEnemyTankPrefabs;
+    private float enemySpawnTimer = 0f;
+    public float enemySpawnCooldown;
+
+    private float waveTimer = 0f;
+    public float waveCooldown;
+    public bool waveActive;
+    private int waveWins;
+    public int wavesNeeded;
+    public int enemyLeft;
+
+    public int maxSpawn;
+    private int maxCount = 0;
+
+    public bool won;
+
     GameObject[] pauseObjects;
     bool paused = false;
     // Use this for initialization
 
     void Start ()
     {
+        tankIconVelocity = Screen.height / timeToTravelStrip;
+        spawnCooldown = timeToTravelStrip / 3.8f;
+        won = false;
+        enemyLeft = 0;
         money = 1000;
         //SoldSprite = Resources.Load<Sprite>("Sprites/SoldSprite");
         theTankIcons = new Dictionary<string, TankIcon>();
         accumulator = 1;
         generateTankScript = castleGO.GetComponent<GenerateTank>();
+        generateEnemyScript = EnemySpawn.GetComponent<GenerateTank>();
         moneyDisplay.text = "$" + money.ToString();
         Time.timeScale = 1;
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
@@ -44,8 +70,11 @@ public class GameManager : MonoBehaviour {
             GameObject TankIconGO = Instantiate(theTankIconPrefabs[randomIdx], Vector3.zero, Quaternion.identity) as GameObject;
             TankIcon newIcon = TankIconGO.GetComponent<TankIcon>();
             newIcon.MyTankPrefab = theTankPrefabs[randomIdx];
+            newIcon.velocity = tankIconVelocity;
             TankIconGO.transform.SetParent(selectionStrip.transform);
             TankIconGO.transform.localPosition = testLocation;
+            RectTransform r = TankIconGO.GetComponent<RectTransform>();
+            r.localScale = new Vector3(1f, 1f, 1f);
             TankIconGO.name = "Tank" + accumulator;
             theTankIcons.Add(TankIconGO.name, newIcon);
             accumulator++;
@@ -67,6 +96,45 @@ public class GameManager : MonoBehaviour {
                 }
             } 
         }
+        if (!waveActive && waveWins < wavesNeeded)
+        {
+            waveTimer += Time.deltaTime;
+            if (waveTimer > waveCooldown)
+            {
+                waveTimer = 0f;
+                waveActive = true;
+                
+            }
+        }
+        else
+        {
+            enemySpawnTimer += Time.deltaTime;
+            if (waveActive && enemySpawnTimer > enemySpawnCooldown && maxCount < maxSpawn && !won)
+            {
+                enemySpawnTimer = 0f;
+                int randomIdx = Random.Range(0, theEnemyTankPrefabs.Length);
+                generateEnemyScript.MakeTank(theEnemyTankPrefabs[randomIdx]);
+                randomIdx = Random.Range(0, theEnemyTankPrefabs.Length);
+                generateEnemyScript.MakeTank(theEnemyTankPrefabs[randomIdx]);
+                randomIdx = Random.Range(0, theEnemyTankPrefabs.Length);
+                generateEnemyScript.MakeTank(theEnemyTankPrefabs[randomIdx]);
+                maxCount++;
+            }
+            if (maxCount >= maxSpawn)
+            {
+                maxCount = 0;
+                waveActive = false;
+                waveWins++;
+            }
+            
+        }
+        if (waveWins >= wavesNeeded && enemyLeft <= 0)
+        {
+            waveActive = false;
+            won = true;
+            victory();
+        }
+        
         if (Input.GetKeyDown(KeyCode.P))
         {
             if(Time.timeScale == 1)
@@ -117,5 +185,9 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1;
         hidePaused();
         paused = false;
+    }
+    public void victory()
+    {
+
     }
 }
