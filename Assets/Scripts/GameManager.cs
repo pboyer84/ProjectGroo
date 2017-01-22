@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour {
 
     public AudioClip buySound;
 
+    private Text WaveCounter;
     // Use this for initialization
 
     void Start ()
@@ -68,6 +69,8 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1;
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         hidePaused();
+        GameObject waveCounterGO = GameObject.Find("WaveCounter");
+        WaveCounter = waveCounterGO.GetComponent<Text>();
     }
 	
 	// Update is called once per frame
@@ -142,6 +145,7 @@ public class GameManager : MonoBehaviour {
                 maxCount = 0;
                 waveActive = false;
                 waveWins++;
+                WaveCounter.text = waveWins.ToString();
             }
             
         }
