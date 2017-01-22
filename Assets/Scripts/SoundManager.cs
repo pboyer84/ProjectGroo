@@ -4,13 +4,16 @@ using System.Collections;
 public class SoundManager : MonoBehaviour {
 
     private AudioSource[] sfxSources;
+    private AudioSource[] explosionSources;
     public AudioSource musicSource;
     public static SoundManager instance = null;
 
     public float lowPitchRange = .95f;
     public float highPitchRange = 1.05f;
-    private int AmountOfSfxSources = 5;
+    private int AmountOfSfxSources = 8;
+    private int AmountOfExplosionSources = 3;
     private int sfxSourceInd = 0;
+    private int explosionSourceInd = 0;
     void Awake() {
 
         if (instance == null)
@@ -18,6 +21,7 @@ public class SoundManager : MonoBehaviour {
 
         else if (instance != null) Destroy(gameObject);
 
+        explosionSources = new AudioSource[AmountOfExplosionSources];
         DontDestroyOnLoad(gameObject);
         sfxSources = new AudioSource[AmountOfSfxSources];
         for (int i = 0; i < AmountOfSfxSources; i++)
@@ -26,11 +30,26 @@ public class SoundManager : MonoBehaviour {
             sfxSources[i].volume = 0.3f;
         }
 
+        for (int i=0; i< AmountOfExplosionSources; i++)
+        {
+            explosionSources[i] = gameObject.AddComponent<AudioSource>();
+            explosionSources[i].volume = 1f;
+        }
+
     }
     public void PlaySingle(AudioClip clip)
     {
-        AudioSource sfxSource = GetNextAvailableSource();
-        //Set the clip of our efxSource audio source to the clip passed in as a parameter.
+        AudioSource sfxSource;
+        if (clip.name.Contains("explosion"))
+        {
+            sfxSource = GetNextAvailableExplosionSource();
+        }
+        else
+        {
+            sfxSource = GetNextAvailableSource();
+        }
+         
+        //Set the clip of our sfxSource audio source to the clip passed in as a parameter.
         sfxSource.clip = clip;
 
         //Play the clip.
@@ -45,6 +64,16 @@ public class SoundManager : MonoBehaviour {
             sfxSourceInd = 0;
         }
         return sfxSources[sfxSourceInd];
+    }
+
+    private AudioSource GetNextAvailableExplosionSource()
+    {
+        explosionSourceInd++;
+        if (explosionSourceInd >= AmountOfExplosionSources)
+        {
+            explosionSourceInd = 0;
+        }
+        return explosionSources[explosionSourceInd];
     }
     //RandomizeSfx chooses randomly between various audio clips and slightly changes their pitch.
     public void RandomizeSfx(params AudioClip[] clips)
