@@ -25,6 +25,7 @@ public class Tank : MonoBehaviour {
 
     public AudioClip laser;
 
+
     // Use this for initialization
     void Start () {
         myHealth = GetComponent<Health>();
@@ -47,7 +48,6 @@ public class Tank : MonoBehaviour {
         if (!inCombat && GetComponent<MoveTo>().agent.remainingDistance > 1f)
         {
             GetComponent<NavMeshAgent>().Resume();
-            //transform.rotation = defaultRotation;
         }
         else {
             GetComponent<NavMeshAgent>().Stop();
@@ -62,9 +62,7 @@ public class Tank : MonoBehaviour {
             shootTimer = 0;
         }
 	}
-    void FixedUpdate() {
 
-    }
     public void detectEnemies(float r) {
         int layer = 0;
         if (gameObject.tag == "Enemy" && attackReady)
@@ -82,6 +80,7 @@ public class Tank : MonoBehaviour {
             {
                 inCombat = true;
                 transform.LookAt(objectsInRadius[0].transform);
+                
             }
             
 
