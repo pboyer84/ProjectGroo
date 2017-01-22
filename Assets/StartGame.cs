@@ -9,5 +9,9 @@ public class StartGame : MonoBehaviour {
         {
             SceneManager.LoadScene("Game");
         }
+        if (Input.GetKeyDown("escape"))
+        {
+            Application.Quit();
+        }
 	}
 }

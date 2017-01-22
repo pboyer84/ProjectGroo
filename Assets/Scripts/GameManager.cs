@@ -11,15 +11,16 @@ public class GameManager : MonoBehaviour {
     public GameObject EnemySpawn;
     public Text moneyDisplay;
     public Sprite SoldSprite;
-    private Vector3 testLocation = new Vector3(-50f, 30f, 0f);
+    private Vector3 testLocation = new Vector3(-50f, 40f, 0f);
     private float spawnTimer = 0f;
     private GenerateTank generateTankScript;
     private GenerateTank generateEnemyScript;
     private GeneratePowerUp generatePowerUpScript;
     private float spawnCooldown;
-    public float timeToTravelStrip = 5f;
+    public float timeToTravelStrip = 10f;
     private float tankIconVelocity;
-    int accumulator, money;
+    private int money;
+    int accumulator;
     Dictionary<string, TankIcon> theTankIcons;
     public GameObject[] theTankPrefabs;
     public GameObject[] theTankIconPrefabs;
@@ -55,7 +56,8 @@ public class GameManager : MonoBehaviour {
     {
         gameEnded = false;
         tankIconVelocity = Screen.height / timeToTravelStrip;
-        spawnCooldown = timeToTravelStrip / 3.8f;
+        spawnCooldown = (timeToTravelStrip / 3.8f)/2f;
+        Debug.Log("Screen height: " + Screen.height);
         won = false;
         enemyLeft = 0;
         money = 1000;
@@ -110,8 +112,7 @@ public class GameManager : MonoBehaviour {
                         }
                        
                         touchedIcons.Add(icon);
-                        money -= 100;
-                        moneyDisplay.text = "$" +  money.ToString();
+                        updateMoney(-100);
                     }
                 }
             } 
@@ -123,7 +124,8 @@ public class GameManager : MonoBehaviour {
             {
                 waveTimer = 0f;
                 waveActive = true;
-                
+                waveWins++;
+                WaveCounter.text = waveWins.ToString();
             }
         }
         else
@@ -134,9 +136,7 @@ public class GameManager : MonoBehaviour {
                 enemySpawnTimer = 0f;
                 int randomIdx = Random.Range(0, theEnemyTankPrefabs.Length);
                 generateEnemyScript.MakeTank(theEnemyTankPrefabs[randomIdx]);
-                randomIdx = Random.Range(0, theEnemyTankPrefabs.Length);
                 generateEnemyScript.MakeTank(theEnemyTankPrefabs[randomIdx]);
-                randomIdx = Random.Range(0, theEnemyTankPrefabs.Length);
                 generateEnemyScript.MakeTank(theEnemyTankPrefabs[randomIdx]);
                 maxCount++;
             }
@@ -144,8 +144,7 @@ public class GameManager : MonoBehaviour {
             {
                 maxCount = 0;
                 waveActive = false;
-                waveWins++;
-                WaveCounter.text = waveWins.ToString();
+                //WaveCounter.text = waveWins.ToString();
             }
             
         }
@@ -220,5 +219,10 @@ public class GameManager : MonoBehaviour {
         victoryText.SetActive(true);
         menuCommandText.SetActive(true);
         gameEnded = true;
+    }
+    public void updateMoney(int amount)
+    {
+        money += amount;
+        moneyDisplay.text = "$" + money.ToString();
     }
 }

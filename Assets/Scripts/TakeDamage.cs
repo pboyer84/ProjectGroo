@@ -7,13 +7,17 @@ public class TakeDamage : MonoBehaviour {
     Dictionary<char, char> strength = new Dictionary<char, char>();
     public float dam;
     public GameObject manager;
+    public GameManager gm;
 
     public AudioClip explosionTank;
     public GameObject TankDeathEffectPrefab;
 
+    public int moneyOnDeath;
+
 	// Use this for initialization
 	void Start () {
         manager = GameObject.FindGameObjectWithTag("GameController");
+        gm = manager.GetComponent<GameManager>();
         strength.Add('r', 'g');
         strength.Add('g', 'b');
         strength.Add('b', 'r');
@@ -31,7 +35,11 @@ public class TakeDamage : MonoBehaviour {
             Destroy(bullet.gameObject);
             if (gameObject.GetComponent<Health>().value <= 0)
             {
-                if (tag == "Enemy") manager.GetComponent<GameManager>().enemyLeft -= 1;
+                if (tag == "Enemy")
+                {
+                    gm.enemyLeft -= 1;
+                    gm.updateMoney(moneyOnDeath);
+                }
                 SoundManager.instance.PlaySingle(explosionTank);
                 Instantiate(TankDeathEffectPrefab, gameObject.transform.position, gameObject.transform.rotation);
                 Destroy(gameObject);
