@@ -23,6 +23,8 @@ public class Tank : MonoBehaviour {
 
     public GameObject manager;
 
+    public AudioClip laser;
+
     // Use this for initialization
     void Start () {
         myHealth = GetComponent<Health>();
@@ -45,6 +47,7 @@ public class Tank : MonoBehaviour {
         if (shootTimer >= shootCooldown && inCombat && attackReady)
         {
             ShootBullet myInstance = gameObject.GetComponent<ShootBullet>();
+            SoundManager.instance.PlaySingle(laser);
             myInstance.Shoot();
             shootTimer = 0;
         }

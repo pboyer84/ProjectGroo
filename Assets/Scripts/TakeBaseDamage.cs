@@ -33,6 +33,7 @@ public class TakeBaseDamage : MonoBehaviour {
     }
     void runDefeated()
     {
+        SoundManager.instance.PlaySingle(explosionBase);
         gameObject.SetActive(false);
         ruinBase.SetActive(true);
         menuCommandText.SetActive(true);
