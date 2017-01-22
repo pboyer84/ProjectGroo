@@ -44,6 +44,9 @@ public class GameManager : MonoBehaviour {
     GameObject[] pauseObjects;
     public bool paused = false;
     public bool gameEnded;
+
+    public AudioClip buySound;
+
     // Use this for initialization
 
     void Start ()
@@ -93,6 +96,7 @@ public class GameManager : MonoBehaviour {
                 {
                     if(money >= 100)
                     {
+                        SoundManager.instance.PlaySingle(buySound);
                         generateTankScript.MakeTank(icon.MyTankPrefab);
                         touchedIcons.Add(icon);
                         money -= 100;

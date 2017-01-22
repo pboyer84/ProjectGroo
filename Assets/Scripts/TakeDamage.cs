@@ -8,6 +8,9 @@ public class TakeDamage : MonoBehaviour {
     public float dam;
     public GameObject manager;
 
+    public AudioClip explosionTank;
+
+
 	// Use this for initialization
 	void Start () {
         manager = GameObject.FindGameObjectWithTag("GameController");
@@ -34,6 +37,7 @@ public class TakeDamage : MonoBehaviour {
             if (gameObject.GetComponent<Health>().value <= 0)
             {
                 if (tag == "Enemy") manager.GetComponent<GameManager>().enemyLeft -= 1;
+                SoundManager.instance.PlaySingle(explosionTank);
                 Destroy(gameObject);
             }
         }

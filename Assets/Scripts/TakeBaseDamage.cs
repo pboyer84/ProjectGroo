@@ -8,6 +8,8 @@ public class TakeBaseDamage : MonoBehaviour {
     public GameObject defeatText;
     public GameObject menuCommandText;
     private float dam;
+
+    public AudioClip explosionBase;
 	// Use this for initialization
 	void Start () {
         baseHealth = GetComponent<Health>();
