@@ -4,14 +4,16 @@ using System.Collections;
 public class SoundManager : MonoBehaviour {
 
     private AudioSource[] sfxSources;
-    private AudioSource[] explosionSources;
+    private AudioSource[] laserSources;
     public AudioSource musicSource;
     public static SoundManager instance = null;
 
+    public float laserVolume;
+    public float fxVolume;
     public float lowPitchRange = .95f;
     public float highPitchRange = 1.05f;
-    private int AmountOfSfxSources = 8;
-    private int AmountOfExplosionSources = 3;
+    private int AmountOfSfxSources = 4;
+    private int AmountOfLaserSources = 8;
     private int sfxSourceInd = 0;
     private int explosionSourceInd = 0;
     void Awake() {
@@ -21,32 +23,32 @@ public class SoundManager : MonoBehaviour {
 
         else if (instance != null) Destroy(gameObject);
 
-        explosionSources = new AudioSource[AmountOfExplosionSources];
+        laserSources = new AudioSource[AmountOfLaserSources];
         DontDestroyOnLoad(gameObject);
         sfxSources = new AudioSource[AmountOfSfxSources];
         for (int i = 0; i < AmountOfSfxSources; i++)
         {
             sfxSources[i] = gameObject.AddComponent<AudioSource>();
-            sfxSources[i].volume = 0.3f;
+            sfxSources[i].volume = fxVolume;
         }
 
-        for (int i=0; i< AmountOfExplosionSources; i++)
+        for (int i=0; i< AmountOfLaserSources; i++)
         {
-            explosionSources[i] = gameObject.AddComponent<AudioSource>();
-            explosionSources[i].volume = 1f;
+            laserSources[i] = gameObject.AddComponent<AudioSource>();
+            laserSources[i].volume = laserVolume;
         }
 
     }
     public void PlaySingle(AudioClip clip)
     {
         AudioSource sfxSource;
-        if (clip.name.Contains("explosion"))
+        if (clip.name.Contains("laser"))
         {
-            sfxSource = GetNextAvailableExplosionSource();
+            sfxSource = GetNextAvailableLaserFxSource();
         }
         else
         {
-            sfxSource = GetNextAvailableSource();
+            sfxSource = GetNextAvailableSfxSource();
         }
          
         //Set the clip of our sfxSource audio source to the clip passed in as a parameter.
@@ -56,7 +58,7 @@ public class SoundManager : MonoBehaviour {
         sfxSource.Play();
     }
 
-    private AudioSource GetNextAvailableSource()
+    private AudioSource GetNextAvailableSfxSource()
     {
         sfxSourceInd++;
         if (sfxSourceInd >= AmountOfSfxSources)
@@ -66,14 +68,14 @@ public class SoundManager : MonoBehaviour {
         return sfxSources[sfxSourceInd];
     }
 
-    private AudioSource GetNextAvailableExplosionSource()
+    private AudioSource GetNextAvailableLaserFxSource()
     {
         explosionSourceInd++;
-        if (explosionSourceInd >= AmountOfExplosionSources)
+        if (explosionSourceInd >= AmountOfLaserSources)
         {
             explosionSourceInd = 0;
         }
-        return explosionSources[explosionSourceInd];
+        return laserSources[explosionSourceInd];
     }
     //RandomizeSfx chooses randomly between various audio clips and slightly changes their pitch.
     public void RandomizeSfx(params AudioClip[] clips)
@@ -83,7 +85,7 @@ public class SoundManager : MonoBehaviour {
 
         //Choose a random pitch to play back our clip at between our high and low pitch ranges.
         float randomPitch = Random.Range(lowPitchRange, highPitchRange);
-        AudioSource sfxSource = GetNextAvailableSource();
+        AudioSource sfxSource = GetNextAvailableSfxSource();
 
         //Set the pitch of the audio source to the randomly chosen pitch.
         sfxSource.pitch = randomPitch;
