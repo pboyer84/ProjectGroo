@@ -37,13 +37,17 @@ public class GameManager : MonoBehaviour {
     private int maxCount = 0;
 
     public bool won;
+    public GameObject victoryText;
+    public GameObject menuCommandText;
 
     GameObject[] pauseObjects;
-    bool paused = false;
+    public bool paused = false;
+    public bool gameEnded;
     // Use this for initialization
 
     void Start ()
     {
+        gameEnded = false;
         tankIconVelocity = Screen.height / timeToTravelStrip;
         spawnCooldown = timeToTravelStrip / 3.8f;
         won = false;
@@ -84,7 +88,7 @@ public class GameManager : MonoBehaviour {
         {
             if (icon.IsTouchingBar && icon.IsAvailableForPurchase)
             {
-                if (Input.GetKeyDown("space") && !paused)
+                if (Input.GetKeyDown("space") && !paused && !gameEnded)
                 {
                     if(money >= 100)
                     {
@@ -188,6 +192,8 @@ public class GameManager : MonoBehaviour {
     }
     public void victory()
     {
-
+        victoryText.SetActive(true);
+        menuCommandText.SetActive(true);
+        gameEnded = true;
     }
 }

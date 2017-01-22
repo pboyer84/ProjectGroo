@@ -29,9 +29,9 @@ public class TakeDamage : MonoBehaviour {
             if (ttype == 'n' || btype == 'n') dam = 2f;
             else if (strength[btype] == ttype) dam += 1f;
             else if (strength[ttype] == btype) dam -= 1f;
-            gameObject.GetComponent<Tank>().health -= dam;
+            gameObject.GetComponent<Health>().value -= dam;
             Destroy(bullet.gameObject);
-            if (gameObject.GetComponent<Tank>().health <= 0)
+            if (gameObject.GetComponent<Health>().value <= 0)
             {
                 if (tag == "Enemy") manager.GetComponent<GameManager>().enemyLeft -= 1;
                 Destroy(gameObject);

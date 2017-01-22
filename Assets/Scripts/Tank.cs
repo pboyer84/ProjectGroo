@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Tank : MonoBehaviour {
 
-    public float health;
+    private Health myHealth;
     public char type;
 
 
@@ -25,14 +25,9 @@ public class Tank : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        myHealth = GetComponent<Health>();
         manager = GameObject.FindGameObjectWithTag("GameController");
-        if (tag == "Friendly") health = 15f;
-        else
-        {
-            health = 5f;
-            manager.GetComponent<GameManager>().enemyLeft += 1;
-
-        }
+        if (tag == "Enemy") manager.GetComponent<GameManager>().enemyLeft += 1;
         shootTimer = 0;
         retreating = false;
         attackReady = true;
